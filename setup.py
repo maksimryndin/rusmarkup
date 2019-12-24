@@ -8,7 +8,7 @@ setup(
     version='0.1.0',
     author='Maksim Ryndin',
     author_email='maksim.ryndin@gmail.com',
-    url='github',
+    url='https://github.com/maksimryndin/rusmarkup',
     description='Простой язык разметки для русского языка',
 
     license='MIT',
