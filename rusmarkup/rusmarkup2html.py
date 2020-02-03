@@ -35,13 +35,15 @@ class rusmarkup2html:
             "|".join(self._tags)
         )
         self._regex = re.compile(self._pattern, re.IGNORECASE|re.DOTALL)
+        self._newline_regex = re.compile(r'(\n)(?P<text>.+)(\n)')
 
     def __call__(self, text: str):
         """
         Конвертировать текст, размеченный тэгами, в html.
         """
         text = self.preprocess(text)
-        return re.sub(self._regex, self._replacer, text)
+        result = re.sub(self._regex, self._replacer, text)
+        return self.postprocess(result)
 
     @property
     def description(self):
@@ -74,6 +76,13 @@ class rusmarkup2html:
         Предобработка текста
         """
         return text
+
+    def postprocess(self, text):
+        """
+        Постобработка текста
+        """
+        result =  re.sub(self._newline_regex, self._newline_replacer, text)
+        return result.replace("\n", "")
 
     def remove_tags(self, text: str):
         """
@@ -177,4 +186,9 @@ class rusmarkup2html:
     def _remover(self, matchobj):
         value = matchobj.group('value')
         value = re.sub(self._regex, self._remover, value)
+        return value
+
+    def _newline_replacer(self, matchobj):
+        value = matchobj.group('text')
+        value = re.sub(self._newline_regex, self._newline_replacer, "<div>{}</div>".format(value))
         return value
