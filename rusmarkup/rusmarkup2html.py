@@ -16,7 +16,8 @@ tags_map = {
     "emphasized": ('<em class="rusmarkup-emphasized">{}</em>', "КУРСИВ"),
     "sup": ('<sup>{}</sup>', "ВЕРХНИЙРЕГИСТР"),
     "sub": ('<sub>{}</sub>', "НИЖНИЙРЕГИСТР"),
-    "list": ('<ol class="rusmarkup-list">{}</ol>', "СПИСОК")
+    "list": ('<ol class="rusmarkup-list">{}</ol>', "СПИСОК"),
+    "slider": ('<div class="rusmarkup-slider num-slides-{}"><figure>{}</figure></div>', "СЛАЙДЕР")
 }
 
 
@@ -158,6 +159,26 @@ class rusmarkup2html:
 
         return self._tags_map['list'][0].format("".join(tags))
 
+    def handle_slider(self, tag, value):
+        tags = []
+        items = re.split(r'\n+', value)
+
+        for item in items:
+            if not item:
+                continue
+            specification = item.split(maxsplit=1)
+            if len(specification) == 1:
+                link = specification[0].strip()
+                tags.append(f'<img src="{link}" alt>')
+            else:
+                link, title = specification
+                link = link.strip()
+                title = title.strip()
+                tags.append(f'<img src="{link}" alt="{title}" title="{title}">')
+
+
+        return self._tags_map['slider'][0].format(len(tags), "".join(tags))
+
     def _replacer(self, matchobj):
         tag = matchobj.group('tag').upper()
         value = matchobj.group('value')
@@ -182,6 +203,8 @@ class rusmarkup2html:
             return self.handle_sub(tag, value)
         elif tag == 'СПИСОК':
             return self.handle_list(tag, value)
+        elif tag == 'СЛАЙДЕР':
+            return self.handle_slider(tag, value)
 
     def _remover(self, matchobj):
         value = matchobj.group('value')

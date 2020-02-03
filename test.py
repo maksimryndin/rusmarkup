@@ -49,6 +49,11 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(self.markupper(items),
                          '<ol class="rusmarkup-list"><li>Позиция 1<ol class="rusmarkup-list"><li>Позиция 1.1</li><li>Позиция 1.2</li></ol></li><li>Позиция 2</li></ol>')
 
+    def test_slider(self):
+        items = "(слайдер)https://cdn.pixabay.com/photo/2019/12/13/08/27/snow-4692469_960_720.jpg занесло снегом\nhttps://cdn.pixabay.com/photo/2019/12/13/08/27/snow-4692469_960_720.jpg(слайдер)"
+        self.assertEqual(self.markupper(items),
+                         '<div class="rusmarkup-slider num-slides-2"><figure><img src="https://cdn.pixabay.com/photo/2019/12/13/08/27/snow-4692469_960_720.jpg" alt="занесло снегом" title="занесло снегом"><img src="https://cdn.pixabay.com/photo/2019/12/13/08/27/snow-4692469_960_720.jpg" alt></figure></div>')
+
     def test_strong(self):
         self.assertEqual(self.markupper("(жирный)полужирный(жирный)"),
                          '<strong class="rusmarkup-strong">полужирный</strong>')
