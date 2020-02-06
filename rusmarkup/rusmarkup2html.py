@@ -213,5 +213,5 @@ class rusmarkup2html:
 
     def _newline_replacer(self, matchobj):
         value = matchobj.group('text')
-        value = re.sub(self._newline_regex, self._newline_replacer, "<div>{}</div>".format(value))
+        value = re.sub(self._newline_regex, self._newline_replacer, "<p>{}</p>".format(value))
         return value

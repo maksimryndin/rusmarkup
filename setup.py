@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='rusmarkup',
-    version='1.0.0',
+    version='1.1.0',
     author='Maksim Ryndin',
     author_email='maksim.ryndin@gmail.com',
     url='https://github.com/maksimryndin/rusmarkup',
